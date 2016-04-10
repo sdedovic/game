@@ -1,6 +1,6 @@
 # Noname Game Server
 
-Install dependenc ies
+Install dependencies
 
 `npm install`
 
