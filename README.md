@@ -6,4 +6,4 @@ Install dependencies
 Run server
 `node index.js`
 
-(Private Trello Board)[https://trello.com/b/ga6CqMyI]
+[Private Trello Board](https://trello.com/b/ga6CqMyI)
