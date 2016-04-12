@@ -14,21 +14,32 @@
     </style>
   </head>
   <body>
-    <h1 id="cookies">#</h1>
+    <h1>World</h1>
+    <h1 id="world">#</h1>
+    <h1>Player</h1>
+    <h1 id="player">#</h1>
     <button onclick="requestCookie()">Give me a single cookie, sir. Please</button>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
-      var text = $('#cookies');
+      var world = $('#world');
+      var player = $('#player');
       var requestCookie = function(){
         socket.emit('request cookie');
       }
-      socket.on('update', function(msg){
+      socket.on('update-world', function(msg){
         if(msg.error){
-          text.text(msg.error);
+          world.text(msg.error);
         } else {
-          text.text(msg.cookies);
+          world.text(msg.cookies);
+        } 
+      });
+      socket.on('update-player', function(msg){
+        if(msg.error){
+          player.text(msg.error);
+        } else {
+          player.text(msg.cookies);
         } 
       });
     </script>
