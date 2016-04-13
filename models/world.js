@@ -10,8 +10,13 @@ World.prototype.connect = function(player) {
 };
 
 World.prototype.update = function(delta){
+    var state = {world: {cookies: this.cookies.count}};
+
     this.players.forEach(function(player){
         player.update(delta);
+
+        state.player =  {cookies: player.cookies};
+        player.socket.emit('update', state);
     });
 };
 

@@ -11,7 +11,6 @@ Cookies.prototype.mine = function(num) {
         mined = num;
         this.count -= num;
     }
-    console.log(this.count)
     return mined;
 };
 

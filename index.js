@@ -16,9 +16,8 @@ http.listen (3000, function () {
     var world = new World();
 
     setInterval(function() {
-        world.update();
-        io.emit('update', world.cookies.count);
-    }, 1000);
+        world.update(500);
+    }, 500);
 
     io.on ('connection', function(socket) {
         var player = new Player(socket, world);
