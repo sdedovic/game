@@ -1,33 +1,27 @@
-var app = require ( 'express' ) ();
-var http = require ( 'http' ).Server ( app );
-var io = require ( 'socket.io' ) ( http );
+var app = require ('express') ();
+var http = require ('http').Server (app);
+var io = require ('socket.io') (http);
 
 var Player = require('./models/player');
+var World = require('./models/world');
 
-var cookies = 100;
-var players = [];
 
-app.get ( '/', function ( req, res ) {
-	  res.sendFile ( __dirname + '/index.html' );
+app.get ('/', function(req, res) {
+	  res.sendFile (__dirname + '/index.html');
 });
 
-io.on ( 'connection', function ( socket ) {
-    var player = new Player("Player: " + players.length, socket);
-    socket.on ( 'request cookie', function (  ) {
-		    if ( cookies > 0 ) {
-			      cookies--;
-            player.cookies++;
-			      io.emit ( 'update-player', { cookies: player.cookies } );
-		    } else {
-			      io.emit ( 'update-player', { cookies: player.cookies, error: 'out of cookies' } );
-		    }
-	  } );
-} );
+http.listen (3000, function () {
+	  console.log ('server on, port 3000');
 
-setInterval ( function () {
-	  io.emit ( 'update-world', { cookies: cookies } );
-}, delay = 1000 );
+    var world = new World();
 
-http.listen ( 3000, function () {
-	  console.log ( 'server on, port 3000' );
-} );
+    setInterval(function() {
+        world.update();
+        io.emit('update', world.cookies.count);
+    }, 1000);
+
+    io.on ('connection', function(socket) {
+        var player = new Player(socket, world);
+        world.connect(player);
+    });
+});
