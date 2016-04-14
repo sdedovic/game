@@ -1,6 +1,7 @@
-var time = require ( './utility/request_time.js' );
+var time = require ( './utility/request_time' );
+var util = require ( './utility/util' );
 
-var updateLoop = Object.create ( Object.prototype, {
+var updateLoopAbstract = Object.create ( Object.prototype, {
 
 	timestep : {
 		configurable : false,
@@ -20,7 +21,11 @@ var updateLoop = Object.create ( Object.prototype, {
 		value : undefined,
 	},
 
-	laststamp : 0,
+} );
+
+var updateLoop = Object.spawn ( updateLoopAbstract, {
+
+  laststamp : { value : 0 },
 	delta : 0,
 	timer : 0,
 	running : false,
@@ -59,3 +64,5 @@ var updateLoop = Object.create ( Object.prototype, {
 		timer = time.requestTimeslot ( loop );
 	},
 } );
+
+module.exports = updateLoop;
