@@ -1,5 +1,3 @@
-module.exports = requestTimeslot;
-
 if ( ! Date.now () ) {
 	Date.now = function () {
 		return new Date ().getTime ();
@@ -7,6 +5,7 @@ if ( ! Date.now () ) {
 }
 
 var requestTimeslot = function () {
+  var timestep = 1000;
 	var timeLast = Date.now ();
 
 	return function ( callback ) {
@@ -23,3 +22,5 @@ var requestTimeslot = function () {
 } ();
 
 var cancelTimeslot = clearTimeout;
+
+exports.requestTimeslot = requestTimeslot;

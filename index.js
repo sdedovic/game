@@ -18,19 +18,13 @@ http.listen (3000, function () {
 
     var world = new World();
 
-/*
 		var worldLoop = Object.spawn ( tick.updateLoop, {
-			timestep : 1000,
-			limit : 60,
-			update : world.update,
-}	);
+      timestep : 1000,
+      limit : 0,
+      update : world.update.bind ( world ),
+    } );
+    worldLoop.update ( worldLoop.timestep );
     worldLoop.start ();
-*/
-
-    setInterval(function() {
-        world.update(500);
-    }, 500);
-
 
     io.on ('connection', function(socket) {
         var player = new Player(socket, world);

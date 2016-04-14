@@ -25,44 +25,50 @@ var updateLoopAbstract = Object.create ( Object.prototype, {
 
 var updateLoop = Object.spawn ( updateLoopAbstract, {
 
-  laststamp : { value : 0 },
+  laststamp : 0,
 	delta : 0,
 	timer : 0,
 	running : false,
 	started : false,
 
 	stop : function () {
-		running = false;
-		started = false;
-		cancelTimeslot ( timer );
+		this.running = false;
+		this.started = false;
+		this.cancelTimeslot ( this.timer );
 	},
 
 	start : function () {
-		if ( ! started ) {
-			started = true;
-			timer = requestTimeslot ( function ( timestamp ) {
-				running = true;
-				laststamp = timestamp;
-				timer = requestTimeslot ( loop );
-			} );
+    console.log ( "called start\nprototype is" );
+    console.log ( Object.getPrototypeOf ( this ) === updateLoop );
+    
+		if ( ! this.started ) {
+			this.started = true;
+			this.timer = time.requestTimeslot ( function ( timestamp ) {
+				this.running = true;
+				this.laststamp = timestamp;
+				this.timer = time.requestTimeslot ( this.loop.bind ( this ) );
+			}.bind ( this ) );
 		}
 	},
 
 	loop : function ( timestamp ) {
-		delta += timestamp - laststamp;
-		laststamp = timestamp;
+    console.log ( "called loop\nprototype is" );
+    console.log ( Object.getPrototypeOf ( this ) === updateLoop );
+
+		this.delta += timestamp - this.laststamp;
+		this.laststamp = timestamp;
 
 		var tries = 0;
-		while ( delta >= timestep ) {
-			update ( timestep );
-			delta -= timestep;
-			if ( ++tries >= limit ) {
-				delta = 0;
+		while ( this.delta >= this.timestep ) {
+			this.update ( this.timestep );
+			this.delta -= this.timestep;
+			if ( ++tries >= this.limit ) {
+				this.delta = 0;
 				break;
 			}
 		}
-		timer = time.requestTimeslot ( loop );
+		this.timer = time.requestTimeslot ( this.loop.bind ( this ) );
 	},
 } );
 
-module.exports = updateLoop;
+exports.updateLoop = updateLoop;
