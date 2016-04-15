@@ -7,6 +7,7 @@ var util = require ( './utility/util' );
 
 var Player = require('./models/player');
 var World = require('./models/world');
+var Farm = require('./models/cookie');
 
 
 app.get ('/', function(req, res) {
@@ -16,24 +17,14 @@ app.get ('/', function(req, res) {
 http.listen (3000, function () {
 	  console.log ('server on, port 3000');
 
-    var world = new World();
-
-/*
-		var worldLoop = Object.spawn ( tick.updateLoop, {
-			timestep : 1000,
-			limit : 60,
-			update : world.update,
-}	);
-    worldLoop.start ();
-*/
+    var farm = new Farm(5000);
+    var world = new World(farm);
 
     setInterval(function() {
         world.update(500);
     }, 500);
 
-
     io.on ('connection', function(socket) {
-        var player = new Player(socket, world);
-        world.connect(player);
+        world.players.push(new Player(socket, farm));
     });
 });

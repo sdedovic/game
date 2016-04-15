@@ -3,13 +3,14 @@ var Cookies = function(count) {
 };
 
 Cookies.prototype.mine = function(num) {
-    var mined;
-    if (num > this.count){
+    var toMine = Math.floor(num);
+    var mined = 0;
+    if (toMine > this.count){
         mined = this.count;
         this.count = 0;
     } else {
-        mined = num;
-        this.count -= num;
+        mined = toMine;
+        this.count -= toMine;
     }
     return mined;
 };
