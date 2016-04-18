@@ -3,23 +3,12 @@ var spawn = require ( './utility/spawn' );
 var util = require ( 'util' );
 
 var updateLoopAbstract = Object.create ( Object.prototype, {
-
-	timestep : {
-		value : undefined,
-	},
-
-	limit : {
-		value : undefined,
-	},
-
-	update : {
-		value : undefined,
-	},
-
+	timestep : {},
+	limit : {},
+	update : {},
 } );
 
 var updateLoop = Object.spawn ( updateLoopAbstract, {
-
   laststamp : 0,
 	delta : 0,
 	timer : 0,
