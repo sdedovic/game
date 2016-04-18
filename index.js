@@ -10,24 +10,24 @@ var World = require('./models/world');
 
 
 app.get ('/', function(req, res) {
-	  res.sendFile (__dirname + '/index.html');
+  res.sendFile (__dirname + '/index.html');
 });
 
 http.listen (3000, function () {
-    console.log ('server on, port 3000');
+  console.log ('server on, port 3000');
 
-    var world = new World();
+  var world = new World();
 
-    var worldLoop = Object.spawn ( tick.updateLoop, {
-      timestep : 1000,
-      limit : 0,
-      update : world.update.bind ( world ),
-    } );
+  var worldLoop = Object.spawn ( tick.updateLoop, {
+    timestep : 1000,
+    limit : 0,
+    update : world.update.bind ( world ),
+  } );
 
-    worldLoop.start ();
+  worldLoop.start ();
 
-    io.on ('connection', function(socket) {
-        var player = new Player(socket, world);
-        world.connect(player);
-    });
+  io.on ('connection', function(socket) {
+    var player = new Player(socket, world);
+    world.connect(player);
+  });
 });
