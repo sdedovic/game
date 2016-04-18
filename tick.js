@@ -1,23 +1,18 @@
 var time = require ( './utility/request_time' );
-var util = require ( './utility/util' );
+var spawn = require ( './utility/spawn' );
+var util = require ( 'util' );
 
 var updateLoopAbstract = Object.create ( Object.prototype, {
 
 	timestep : {
-		configurable : false,
-		writable : false, 
 		value : undefined,
 	},
 
 	limit : {
-		configurable : false,
-		writable : false, 
 		value : undefined,
 	},
 
 	update : {
-		configurable: false,
-		writable: false,
 		value : undefined,
 	},
 
@@ -38,23 +33,17 @@ var updateLoop = Object.spawn ( updateLoopAbstract, {
 	},
 
 	start : function () {
-    console.log ( "called start\nprototype is" );
-    console.log ( Object.getPrototypeOf ( this ) === updateLoop );
-    
 		if ( ! this.started ) {
 			this.started = true;
 			this.timer = time.requestTimeslot ( function ( timestamp ) {
 				this.running = true;
 				this.laststamp = timestamp;
-				this.timer = time.requestTimeslot ( this.loop.bind ( this ) );
-			}.bind ( this ) );
+				this.timer = time.requestTimeslot ( this.loop.bind ( this ), this.timestep );
+			}.bind ( this ), this.timestep );
 		}
 	},
 
 	loop : function ( timestamp ) {
-    console.log ( "called loop\nprototype is" );
-    console.log ( Object.getPrototypeOf ( this ) === updateLoop );
-
 		this.delta += timestamp - this.laststamp;
 		this.laststamp = timestamp;
 
@@ -67,7 +56,7 @@ var updateLoop = Object.spawn ( updateLoopAbstract, {
 				break;
 			}
 		}
-		this.timer = time.requestTimeslot ( this.loop.bind ( this ) );
+		this.timer = time.requestTimeslot ( this.loop.bind ( this ), this.timestep );
 	},
 } );
 

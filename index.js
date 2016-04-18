@@ -3,7 +3,7 @@ var http = require ('http').Server (app);
 var io = require ('socket.io') (http);
 
 var tick = require ( './tick' );
-var util = require ( './utility/util' );
+var spawn = require ( './utility/spawn' );
 
 var Player = require('./models/player');
 var World = require('./models/world');
@@ -18,12 +18,12 @@ http.listen (3000, function () {
 
     var world = new World();
 
-		var worldLoop = Object.spawn ( tick.updateLoop, {
+    var worldLoop = Object.spawn ( tick.updateLoop, {
       timestep : 1000,
       limit : 0,
       update : world.update.bind ( world ),
     } );
-    worldLoop.update ( worldLoop.timestep );
+
     worldLoop.start ();
 
     io.on ('connection', function(socket) {

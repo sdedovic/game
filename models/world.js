@@ -10,9 +10,9 @@ World.prototype.connect = function(player) {
 };
 
 World.prototype.update = function(delta){
-    console.log ( "called update" );
-    console.log ( Object.getPrototypeOf ( this ) === World.prototype );
     var state = {world: {cookies: this.cookies.count}};
+
+    console.log ( state );
 
     this.players.forEach(function(player){
         player.update(delta);
