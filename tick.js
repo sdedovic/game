@@ -1,6 +1,5 @@
 var time = require ( './utility/request_time' );
 var spawn = require ( './utility/spawn' );
-var util = require ( 'util' );
 
 var updateLoopAbstract = Object.create ( Object.prototype, {
 	timestep : {},
@@ -10,10 +9,10 @@ var updateLoopAbstract = Object.create ( Object.prototype, {
 
 var updateLoop = Object.spawn ( updateLoopAbstract, {
   laststamp : 0,
-	delta : 0,
-	timer : 0,
-	running : false,
-	started : false,
+  delta : 0,
+  timer : 0,
+  running : false,
+  started : false,
 
 	stop : function () {
 		this.running = false;
