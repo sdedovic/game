@@ -1,5 +1,3 @@
-module.exports = requestTimeslot;
-
 if ( ! Date.now () ) {
 	Date.now = function () {
 		return new Date ().getTime ();
@@ -7,19 +5,21 @@ if ( ! Date.now () ) {
 }
 
 var requestTimeslot = function () {
-	var timeLast = Date.now ();
+	var laststamp = Date.now ();
 
-	return function ( callback ) {
-		var timeNow = Date.now (),
-				delta = timeNow - timeLast,
+	return function ( callback, timestep ) {
+		var timestamp = Date.now (),
+				delta = timestamp - laststamp,
 				timeout = ( timestep > delta ) ? ( timestep - delta ) : 0;
 
-		timeLast = timeNow + timeout;
+		laststamp = timestamp + timeout;
 
 		return setTimeout ( function () {
-			callback ( timeNow + timeout );
+			callback ( timestamp + timeout );
 		}, timeout );
 	};
 } ();
 
 var cancelTimeslot = clearTimeout;
+
+exports.requestTimeslot = requestTimeslot;
